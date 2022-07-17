@@ -5,3 +5,42 @@ spring:
     active: dev
   config:
     import: 'optional:configserver:http://localhost:8071'
+
+resilience4j.circuitbreaker:
+    instances:
+      userService:
+        slowCallRateThreshold: 50
+        slowCallDurationThreshold: 5000ms
+        ringBufferSizeInClosedState: 5
+        ringBufferSizeInHalfOpenState: 3
+        waitDurationInOpenState: 20s
+        failureRateThreshold: 50 #Configures the percentage of the failure rate threshold (greater than or equal).
+        recordExceptions: #By default, all exceptions are recorded as failures, but if list of exceptions specified like this all other exceptions count as a success unless they are explicitly ignored
+          - java.util.concurrent.TimeoutException
+      contactService:
+        ringBufferSizeInClosedState: 6
+        ringBufferSizeInHalfOpenState: 4
+        waitDurationInOpenState: 20s
+        failureRateThreshold: 60 #Configures the percentage of the failure rate threshold (greater than or equal).
+
+resilience4j.retry:
+    instances:
+      retryUserService:
+        max-attempts: 5
+        wait-duration: 1000ms
+        retry-exceptions: #The list of exceptions you want to retry
+          - java.util.concurrent.TimeoutException
+
+resilience4j.bulkhead:
+    instances:
+      bulkheadUserService:
+        max-wait-duration: 2ms
+        max-concurrent-calls: 20
+
+resilience4j.thread-pool-bulkhead:
+    instances:
+      bulkheadUserService:
+        max-thread-pool-size: 1
+        core-thread-pool-size: 1
+        queue-capacity: 1
+        keepAliveDuration: 10ms
