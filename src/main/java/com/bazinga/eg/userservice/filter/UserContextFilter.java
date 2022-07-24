@@ -1,14 +1,13 @@
-package com.bazinga.eg.userservice.utils;
+package com.bazinga.eg.userservice.filter;
 
+import com.bazinga.eg.userservice.utils.Constants;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @Slf4j
-@Component
 public class UserContextFilter implements Filter {
 
     @Override
@@ -20,7 +19,7 @@ public class UserContextFilter implements Filter {
         UserContextHolder.getContext().setAuthToken(httpServletRequest.getHeader(Constants.AUTH_TOKEN));
         UserContextHolder.getContext().setContactId(httpServletRequest.getHeader(Constants.CONTACT_ID));
 
-        log.debug("UserContextFilter Correlation id: {}", UserContextHolder.getContext().getCorrelationId());
+        log.debug("UserContextFilter, correlation id: {}", UserContextHolder.getContext().getCorrelationId());
 
         filterChain.doFilter(httpServletRequest, servletResponse);
     }

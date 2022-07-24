@@ -1,10 +1,8 @@
-package com.bazinga.eg.userservice.utils;
+package com.bazinga.eg.userservice.filter;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.stereotype.Component;
 
-@Component
 @Getter
 @Setter
 public class UserContext {

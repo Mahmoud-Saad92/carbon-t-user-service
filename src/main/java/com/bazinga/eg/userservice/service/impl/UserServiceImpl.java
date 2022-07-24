@@ -12,7 +12,7 @@ import com.bazinga.eg.userservice.service.UserService;
 import com.bazinga.eg.userservice.service.client.Client;
 import com.bazinga.eg.userservice.service.client.ContactFeignClientInterface;
 import com.bazinga.eg.userservice.service.client.FunctionalClient;
-import com.bazinga.eg.userservice.utils.UserContextHolder;
+import com.bazinga.eg.userservice.filter.UserContextHolder;
 import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
@@ -84,7 +84,8 @@ public class UserServiceImpl extends GenericService<User, UserDto> implements Us
     @Retry(name = "retryUserService", fallbackMethod = "buildFallbackUserDto")
     @Bulkhead(name = "bulkheadUserService", fallbackMethod = "buildFallbackUserDto", type = Bulkhead.Type.THREADPOOL)
     public UserDto getUserById(Long id) {
-        log.debug("getLicensesByOrganization Correlation id: {}", UserContextHolder.getContext().getCorrelationId());
+        log.debug("UserServiceImpl, correlation id: {}", UserContextHolder.getContext().getCorrelationId());
+
         randomlyRunLong();
         User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("resource not found"));
 

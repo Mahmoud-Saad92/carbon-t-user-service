@@ -1,4 +1,4 @@
-package com.bazinga.eg.userservice.utils;
+package com.bazinga.eg.userservice.filter;
 
 import org.springframework.util.Assert;
 
